@@ -1,0 +1,23 @@
+-----------jsonSchemaOperation1.hql file-----------
+
+LINE 1 to LINE 5 are the common operations in hive like dropping and creating table
+
+
+LINE 4 : here we have created 1st table rawtable(line string) that has only 1 column i.e. line in its schema
+
+LINE 5 : now we loaded a myjson.json file in this table 
+
+LINE 6 : When we fire a query to show all the result it will show all the json kind of data 
+
+LINE 7 : get_json_object(<<column_name>>,'$.<<key_name>>') this method will give you the value which is there in front of this key_name :::: REMEMBER :::: each ',' seperated js object will be treated as a tuple moreover a single record in this table.
+
+LINE 8 : now we dont want to call this method get_json_object again and again so we first created a seperate table personInfoFromJsonTable with schema (name string , age int, sex string , city string)
+and want to query it in the same way as we query a table with non json data .
+
+LINE 9 : NOW at the time of loading data into our new table we load it from the table which contain json data as tuples 
+so,
+
+>insert overwrite table <<new_table>> 
+>select <<ALIAS_NAME>>.* : here * denotes that we want to import of every key into a our columns column. 
+>from <<table_with_json_data>>
+>lateral view json_tuple (<<column_name_of_old>>,<<key1>>,<<key2>>,<<key3>>,<<key4>>) <<ALIAS_NAME>>;
