@@ -1,0 +1,43 @@
+PROBLEM STATEMENT(s) :(1) why hive doesnt starts in two seperate tabs 
+
+                    (2) we have hive prompt opened in one shell and in other tab(both tabs are at same path i.e. when you hit command 'pwd' both tabs show same results) we are trying to run 
+hive -f <<some_file.hql>> it throws error.
+
+
+EXPLANATION ,
+
+Derby is a metastore that comes default with hive i.e. embedded one , so its the nature of embedded metastore that it alots only one session instance to one metastore configuration.
+
+NOW, what is meaning of one instance to one metastore configuration : 
+ OBSERVE BY YOURSELF
+ 1) close all terminals now open a fresh terminal and create a dir test1 and navigate into it 
+                     mkdir test1
+		     cd test1     
+ 2) in another tab create  another dir test2 and navigate into it.
+                       mkdir test2
+			cd test2
+ 3) run hive in both the tabs 
+
+ 4) WHAT YOU WILL NOTICE IS : it will perfectly run fine 
+              -------------- BUT WAIT !!!!! ----------------
+ . THERE IS A CATCH HERE .
+ 5) create database named test1_db in test1's hive prompt 
+ 6) create database named test2_db in test2's hive prompt
+
+ 7) fire query 
+     show databases in both tabs and notice 
+ --> you wont see both the dbs in both prompts and here itself the doubt gets cleared that both the directories that is test1 and test2 have there seperate metastore configuration files ..
+
+
+   ---------DONT BELIEVE ME !!!! ---------------
+
+ 8) just hit ll command and try to read the services.properties file inside an automatically generated directory namely metastore
+
+ 9) NOW I THINK WHOLE PICTURE WILL BE CLEAR.
+
+PS: TRY TO RUN SAME THINGS WHEN YOU USE MYSQL OR THRIFT AS METASTORE AND OBSERVE CHANGE.
+
+HOPE THIS HELPS THANKS !!
+
+
+  
